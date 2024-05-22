@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Alert, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, Button, Alert, TextInput } from 'react-native';
 
-
-
+let currency = 0;
+let currency_name = "";
 
 
 export default function App() {
+  
 
-
-
+  
   const [inputValue, setInputValue] = useState("1");
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = (_name) => {
+    setModalVisible(!modalVisible);
+  };
   const [USD, setUSD] = useState(null);
   const [EUR, setEUR] = useState(null);
   const [GBP, setGBP] = useState(null);
@@ -22,9 +25,9 @@ export default function App() {
   const [RON, setRON] = useState(null);
   const [SEK, setSEK] = useState(null);
   const [CHF, setCHF] = useState(null);
+  
 
-
-
+  
 
 
   // pobieranie info z API
@@ -90,8 +93,6 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-
-
       <Text>Podaj ilość PLN:</Text>
       <TextInput 
         placeholder='PLN'
@@ -100,22 +101,61 @@ export default function App() {
         style={styles.inputBox}
         maxLength={18}
       />
-
-
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>USD: { (inputValue * USD).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>EUR: { (inputValue * EUR).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>GBP: { (inputValue * GBP).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>CZK: { (inputValue * CZK).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>HUF: { (inputValue * HUF).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>TRY: { (inputValue * TRY).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>BGN: { (inputValue * BGN).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>DKK: { (inputValue * DKK).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>RON: { (inputValue * RON).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>SEK: { (inputValue * SEK).toFixed(5) }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.outputText}>CHF: { (inputValue * CHF).toFixed(5) }</Text>
+      </TouchableOpacity>
+      
+      
+      
 
       <Text style={styles.outputText}>USD: { (inputValue * USD).toFixed(5) }</Text>
-      <Text style={styles.outputText}>EUR: { (inputValue * EUR).toFixed(5) }</Text>
-      <Text style={styles.outputText}>GBP: { (inputValue * GBP).toFixed(5) }</Text>
-      <Text style={styles.outputText}>CZK: { (inputValue * CZK).toFixed(5) }</Text>
-      <Text style={styles.outputText}>HUF: { (inputValue * HUF).toFixed(5) }</Text>
-      <Text style={styles.outputText}>TRY: { (inputValue * TRY).toFixed(5) }</Text>
-      <Text style={styles.outputText}>BGN: { (inputValue * BGN).toFixed(5) }</Text>
-      <Text style={styles.outputText}>DKK: { (inputValue * DKK).toFixed(5) }</Text>
-      <Text style={styles.outputText}>RON: { (inputValue * RON).toFixed(5) }</Text>
-      <Text style={styles.outputText}>SEK: { (inputValue * SEK).toFixed(5) }</Text>
-      <Text style={styles.outputText}>CHF: { (inputValue * CHF).toFixed(5) }</Text>
-
-
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Informacje o kursie {currency_name}</Text>
+            <Text style={styles.modalText}>Kurs wymiany: {currency}</Text>
+            <Text style={styles.modalText}>Kwota przeliczona: { (inputValue * currency).toFixed(5) }</Text>
+            <Button title="Zamknij" onPress={toggleModal} />
+          </View>
+        </View>
+      </Modal>
+    
+    
     </View>
   );
 
