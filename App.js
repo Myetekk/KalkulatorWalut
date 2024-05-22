@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Alert, TextInput } from 'react-native';
-import RNFS from 'react-native-fs';
+
 
 
 
@@ -22,31 +22,6 @@ export default function App() {
   const [RON, setRON] = useState(null);
   const [SEK, setSEK] = useState(null);
   const [CHF, setCHF] = useState(null);
-  
-  const fs = require('fs');
-  
-  
-
-  const saveDataToFile = async (data, filename) => {
-    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
-    try {
-      await RNFS.writeFile(path, JSON.stringify(data), 'utf8');
-      console.log('Data saved to file:', path);
-    } catch (error) {
-      console.error('Error saving data to file:', error);
-    }
-  };
-  const readDataFromFile = async (filename) => {
-    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
-    try {
-      const fileContent = await RNFS.readFile(path, 'utf8');
-      return JSON.parse(fileContent);
-    } catch (error) {
-      console.error('Error reading data from file:', error);
-      return null;
-    }
-  };
-
 
 
 
@@ -54,54 +29,41 @@ export default function App() {
 
   // pobieranie info z API
   useEffect(() => {
-      const savedData = readDataFromFile('currencyData.json');
-        if (savedData) {
-          setUSD(savedData.quotes.PLNUSD)
-          setEUR(savedData.quotes.PLNEUR)
-          setGBP(savedData.quotes.PLNGBP)
-          setCZK(savedData.quotes.PLNCZK)
-          setHUF(savedData.quotes.PLNHUF)
-          setTRY(savedData.quotes.PLNTRY)
-          setBGN(savedData.quotes.PLNBGN)
-          setDKK(savedData.quotes.PLNDKK)
-          setRON(savedData.quotes.PLNRON)
-          setSEK(savedData.quotes.PLNSEK)
-          setCHF(savedData.quotes.PLNCHF)
-        }
-    // fetch('http://apilayer.net/api/live?access_key=5045099071835e8a9c3b4a49a43df72e&currencies=USD,EUR,GBP,CZK,HUF,TRY,BGN,DKK,RON,SEK,CHF&source=PLN', {
-    // method: 'GET',
-    // headers: {
-    //   "Accept": 'application/json',
-    //   "Content-Type": 'application/json; charset=utf-8',
-    // }
-    // })
-    // .then(response => {
-    // if (!response.ok) {
-    //   throw new Error('Network response was not ok');
-    // }
-    // return response.json();
-    // })
-    // .then(data => {
-    //   saveDataToFile(data, 'currencyData.json');
-    //   const stringedData = JSON.stringify(data)
-    //   const parsedData = JSON.parse(stringedData)
-    //   saveDataToFile(data, 'currencyData.json');
-    //   setUSD(parsedData.quotes.PLNUSD)
-    //   setEUR(parsedData.quotes.PLNEUR)
-    //   setGBP(parsedData.quotes.PLNGBP)
-    //   setCZK(parsedData.quotes.PLNCZK)
-    //   setHUF(parsedData.quotes.PLNHUF)
-    //   setTRY(parsedData.quotes.PLNTRY)
-    //   setBGN(parsedData.quotes.PLNBGN)
-    //   setDKK(parsedData.quotes.PLNDKK)
-    //   setRON(parsedData.quotes.PLNRON)
-    //   setSEK(parsedData.quotes.PLNSEK)
-    //   setCHF(parsedData.quotes.PLNCHF)
-    // })
-    // .catch(error => {
-    //   console.error('There has been a problem with your fetch operation:', error);
-    //   Alert.alert('Error', 'Failed to fetch data.');
-    // });
+    fetch('http://apilayer.net/api/live?access_key=5045099071835e8a9c3b4a49a43df72e&currencies=USD,EUR,GBP,CZK,HUF,TRY,BGN,DKK,RON,SEK,CHF&source=PLN', {
+    method: 'GET',
+    headers: {
+      "Accept": 'application/json',
+      "Content-Type": 'application/json; charset=utf-8',
+    }
+    })
+    .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+    })
+    .then(data => {
+
+      const stringedData = JSON.stringify(data)
+      const parsedData = JSON.parse(stringedData)
+
+      setUSD(parsedData.quotes.PLNUSD)
+      setEUR(parsedData.quotes.PLNEUR)
+      setGBP(parsedData.quotes.PLNGBP)
+      setCZK(parsedData.quotes.PLNCZK)
+      setHUF(parsedData.quotes.PLNHUF)
+      setTRY(parsedData.quotes.PLNTRY)
+      setBGN(parsedData.quotes.PLNBGN)
+      setDKK(parsedData.quotes.PLNDKK)
+      setRON(parsedData.quotes.PLNRON)
+      setSEK(parsedData.quotes.PLNSEK)
+      setCHF(parsedData.quotes.PLNCHF)
+
+    })
+    .catch(error => {
+      console.error('There has been a problem with your fetch operation:', error);
+      Alert.alert('Error', 'Failed to fetch data.');
+    });
   }, []);
 
 
@@ -138,7 +100,7 @@ export default function App() {
         style={styles.inputBox}
         maxLength={18}
       />
-      
+
 
 
       <Text style={styles.outputText}>USD: { (inputValue * USD).toFixed(5) }</Text>
@@ -157,7 +119,7 @@ export default function App() {
     </View>
   );
 
-  
+
 
 }
 
