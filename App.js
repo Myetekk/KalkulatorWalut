@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Modal, Button, Alert, TextInput } from 'react-native';
 
-let currency = 0;
-let currency_name = "";
+
+
 
 
 export default function App() {
@@ -25,6 +25,9 @@ export default function App() {
   const [RON, setRON] = useState(null);
   const [SEK, setSEK] = useState(null);
   const [CHF, setCHF] = useState(null);
+
+  const [currencyName, setCurrencyName] = useState("");
+  const [currency, setCurrency] = useState("");
   
 
   
@@ -87,13 +90,24 @@ export default function App() {
     setInputValue(tempText);
   }
 
+
+
+
+
+  // przekazywanie informacji o walucie do modala
+  function onOpenModal(currency_name, currency) {
+    setCurrencyName(currency_name)
+    setCurrency(currency)
+    toggleModal()
+  }
+
   
 
 
 
   return (
     <View style={styles.container}>
-      <Text>Podaj ilość PLN:</Text>
+      <Text style={styles.outputText}>Podaj ilość PLN:</Text>
       <TextInput 
         placeholder='PLN'
         value={inputValue}
@@ -101,44 +115,43 @@ export default function App() {
         style={styles.inputBox}
         maxLength={18}
       />
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Dolar Amerykański", USD) }>
         <Text style={styles.outputText}>USD: { (inputValue * USD).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Euro", EUR) }>
         <Text style={styles.outputText}>EUR: { (inputValue * EUR).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Brytyjski funt", GBP) }>
         <Text style={styles.outputText}>GBP: { (inputValue * GBP).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Korona czeska", CZK) }>
         <Text style={styles.outputText}>CZK: { (inputValue * CZK).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Forint", HUF) }>
         <Text style={styles.outputText}>HUF: { (inputValue * HUF).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Lira turecka", TRY) }>
         <Text style={styles.outputText}>TRY: { (inputValue * TRY).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Lew Bułgarski", BGN) }>
         <Text style={styles.outputText}>BGN: { (inputValue * BGN).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Korona duńska", DKK) }>
         <Text style={styles.outputText}>DKK: { (inputValue * DKK).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Lej rumuński", RON) }>
         <Text style={styles.outputText}>RON: { (inputValue * RON).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Korona szwedzka", SEK) }>
         <Text style={styles.outputText}>SEK: { (inputValue * SEK).toFixed(5) }</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={ () => onOpenModal("Frank szwajcarski", CHF) }>
         <Text style={styles.outputText}>CHF: { (inputValue * CHF).toFixed(5) }</Text>
       </TouchableOpacity>
       
       
       
 
-      <Text style={styles.outputText}>USD: { (inputValue * USD).toFixed(5) }</Text>
       <Modal
         animationType="slide"
         transparent={false}
@@ -147,9 +160,9 @@ export default function App() {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Informacje o kursie {currency_name}</Text>
-            <Text style={styles.modalText}>Kurs wymiany: {currency}</Text>
-            <Text style={styles.modalText}>Kwota przeliczona: { (inputValue * currency).toFixed(5) }</Text>
+            <Text style={styles.outputText}>Informacje o kursie: {currencyName}</Text>
+            <Text style={styles.outputText}>Kurs wymiany: {currency}</Text>
+            <Text style={styles.outputText}>Kwota przeliczona: { (inputValue * currency).toFixed(5) }</Text>
             <Button title="Zamknij" onPress={toggleModal} />
           </View>
         </View>
@@ -186,6 +199,7 @@ const styles = StyleSheet.create({
   }, 
 
   outputText: {
-    margin: 5
+    margin: 5,
+    fontSize: 16,
   }
 });
